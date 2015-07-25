@@ -33,7 +33,7 @@ PODS:
   - coinbase-official/OAuth (2.1.4)
 
 DEPENDENCIES:
-  - Braintree
+  - Braintree (= 3.9.1)
 
 SPEC CHECKSUMS:
   Braintree: 1796b67efcf832019d1da1b8a1d779e202e3796f

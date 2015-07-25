@@ -105,11 +105,11 @@
 		A4B259581B441D6E000BF9D1 /* BrainTreeTest */ = {
 			isa = PBXGroup;
 			children = (
+				A4B259631B441D6E000BF9D1 /* Main.storyboard */,
 				A4B2595D1B441D6E000BF9D1 /* AppDelegate.h */,
 				A4B2595E1B441D6E000BF9D1 /* AppDelegate.m */,
 				A4B259601B441D6E000BF9D1 /* ViewController.h */,
 				A4B259611B441D6E000BF9D1 /* ViewController.m */,
-				A4B259631B441D6E000BF9D1 /* Main.storyboard */,
 				A4B259661B441D6E000BF9D1 /* Images.xcassets */,
 				A4B259681B441D6E000BF9D1 /* LaunchScreen.xib */,
 				A4B259591B441D6E000BF9D1 /* Supporting Files */,
@@ -358,7 +358,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -395,7 +395,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -407,9 +407,12 @@
 			baseConfigurationReference = 79187C21EAC468F4048A238D /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				INFOPLIST_FILE = BrainTreeTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "65f2a6f8-891d-4f06-b6ae-31c44eb92877";
 			};
 			name = Debug;
 		};
@@ -418,9 +421,12 @@
 			baseConfigurationReference = 3AA7BCF4DFB2E34119793A84 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				INFOPLIST_FILE = BrainTreeTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "65f2a6f8-891d-4f06-b6ae-31c44eb92877";
 			};
 			name = Release;
 		};
