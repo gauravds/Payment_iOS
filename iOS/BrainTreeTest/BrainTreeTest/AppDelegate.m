@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import <Braintree/Braintree.h>
-
+#define BRAIN_TREE_OPEN_URL_SCHEME @"com.punchh.braintreetest.payments"
 @interface AppDelegate ()
 
 @end
@@ -18,7 +18,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [Braintree setReturnURLScheme:@"com.punchh.braintreetest.payments"];
+    [Braintree setReturnURLScheme:BRAIN_TREE_OPEN_URL_SCHEME];
     return YES;
 }
 
@@ -26,8 +26,10 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    
-    return [Braintree handleOpenURL:url sourceApplication:sourceApplication];
+    if ([[url scheme] isEqualToString:BRAIN_TREE_OPEN_URL_SCHEME]) {
+        return [Braintree handleOpenURL:url sourceApplication:sourceApplication];
+    }
+    return NO;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
