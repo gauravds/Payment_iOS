@@ -1,4 +1,5 @@
 PODS:
+  - BKMoneyKit (0.0.5)
   - Braintree (3.9.1):
     - Braintree/API (= 3.9.1)
     - Braintree/Coinbase (= 3.9.1)
@@ -30,13 +31,18 @@ PODS:
     - Braintree/API
   - Braintree/Venmo (3.9.1):
     - Braintree/API
+  - CardIO (5.1.0)
   - coinbase-official/OAuth (2.1.4)
 
 DEPENDENCIES:
+  - BKMoneyKit (= 0.0.5)
   - Braintree (= 3.9.1)
+  - CardIO (= 5.1.0)
 
 SPEC CHECKSUMS:
+  BKMoneyKit: acd201075dae1e99d146ea97bf3b756152b519fd
   Braintree: 1796b67efcf832019d1da1b8a1d779e202e3796f
+  CardIO: 5c8128e07f577824f132881171210b45721c517a
   coinbase-official: 4ad3ac862840657b4184345eb84af8166ab2b04e
 
 COCOAPODS: 0.36.4

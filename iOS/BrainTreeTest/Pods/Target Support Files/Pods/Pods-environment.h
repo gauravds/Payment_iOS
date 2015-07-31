@@ -6,6 +6,12 @@
 // project.
 
 
+// BKMoneyKit
+#define COCOAPODS_POD_AVAILABLE_BKMoneyKit
+#define COCOAPODS_VERSION_MAJOR_BKMoneyKit 0
+#define COCOAPODS_VERSION_MINOR_BKMoneyKit 0
+#define COCOAPODS_VERSION_PATCH_BKMoneyKit 5
+
 // Braintree
 #define COCOAPODS_POD_AVAILABLE_Braintree
 #define COCOAPODS_VERSION_MAJOR_Braintree 3
@@ -53,6 +59,12 @@
 #define COCOAPODS_VERSION_MAJOR_Braintree_Venmo 3
 #define COCOAPODS_VERSION_MINOR_Braintree_Venmo 9
 #define COCOAPODS_VERSION_PATCH_Braintree_Venmo 1
+
+// CardIO
+#define COCOAPODS_POD_AVAILABLE_CardIO
+#define COCOAPODS_VERSION_MAJOR_CardIO 5
+#define COCOAPODS_VERSION_MINOR_CardIO 1
+#define COCOAPODS_VERSION_PATCH_CardIO 0
 
 // coinbase-official/OAuth
 #define COCOAPODS_POD_AVAILABLE_coinbase_official_OAuth

@@ -13,19 +13,8 @@
 		A4B259651B441D6E000BF9D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B259631B441D6E000BF9D1 /* Main.storyboard */; };
 		A4B259671B441D6E000BF9D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4B259661B441D6E000BF9D1 /* Images.xcassets */; };
 		A4B2596A1B441D6E000BF9D1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4B259681B441D6E000BF9D1 /* LaunchScreen.xib */; };
-		A4B259761B441D6E000BF9D1 /* BrainTreeTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A4B259751B441D6E000BF9D1 /* BrainTreeTestTests.m */; };
 		C63DB482D745F2F4BC1E155B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7FBD4927158993FCEDF3941 /* libPods.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		A4B259701B441D6E000BF9D1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A4B2594E1B441D6E000BF9D1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A4B259551B441D6E000BF9D1;
-			remoteInfo = BrainTreeTest;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		3AA7BCF4DFB2E34119793A84 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -40,9 +29,6 @@
 		A4B259641B441D6E000BF9D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4B259661B441D6E000BF9D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A4B259691B441D6E000BF9D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		A4B2596F1B441D6E000BF9D1 /* BrainTreeTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BrainTreeTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A4B259741B441D6E000BF9D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A4B259751B441D6E000BF9D1 /* BrainTreeTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrainTreeTestTests.m; sourceTree = "<group>"; };
 		B7FBD4927158993FCEDF3941 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -52,13 +38,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C63DB482D745F2F4BC1E155B /* libPods.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A4B2596C1B441D6E000BF9D1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,7 +65,6 @@
 			isa = PBXGroup;
 			children = (
 				A4B259581B441D6E000BF9D1 /* BrainTreeTest */,
-				A4B259721B441D6E000BF9D1 /* BrainTreeTestTests */,
 				A4B259571B441D6E000BF9D1 /* Products */,
 				4C619C767059121C81152108 /* Pods */,
 				9CBE211A622FE20D1831CC56 /* Frameworks */,
@@ -97,7 +75,6 @@
 			isa = PBXGroup;
 			children = (
 				A4B259561B441D6E000BF9D1 /* BrainTreeTest.app */,
-				A4B2596F1B441D6E000BF9D1 /* BrainTreeTestTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -126,23 +103,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		A4B259721B441D6E000BF9D1 /* BrainTreeTestTests */ = {
-			isa = PBXGroup;
-			children = (
-				A4B259751B441D6E000BF9D1 /* BrainTreeTestTests.m */,
-				A4B259731B441D6E000BF9D1 /* Supporting Files */,
-			);
-			path = BrainTreeTestTests;
-			sourceTree = "<group>";
-		};
-		A4B259731B441D6E000BF9D1 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				A4B259741B441D6E000BF9D1 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -165,24 +125,6 @@
 			productReference = A4B259561B441D6E000BF9D1 /* BrainTreeTest.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A4B2596E1B441D6E000BF9D1 /* BrainTreeTestTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A4B2597C1B441D6E000BF9D1 /* Build configuration list for PBXNativeTarget "BrainTreeTestTests" */;
-			buildPhases = (
-				A4B2596B1B441D6E000BF9D1 /* Sources */,
-				A4B2596C1B441D6E000BF9D1 /* Frameworks */,
-				A4B2596D1B441D6E000BF9D1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A4B259711B441D6E000BF9D1 /* PBXTargetDependency */,
-			);
-			name = BrainTreeTestTests;
-			productName = BrainTreeTestTests;
-			productReference = A4B2596F1B441D6E000BF9D1 /* BrainTreeTestTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -194,10 +136,6 @@
 				TargetAttributes = {
 					A4B259551B441D6E000BF9D1 = {
 						CreatedOnToolsVersion = 6.3;
-					};
-					A4B2596E1B441D6E000BF9D1 = {
-						CreatedOnToolsVersion = 6.3;
-						TestTargetID = A4B259551B441D6E000BF9D1;
 					};
 				};
 			};
@@ -215,7 +153,6 @@
 			projectRoot = "";
 			targets = (
 				A4B259551B441D6E000BF9D1 /* BrainTreeTest */,
-				A4B2596E1B441D6E000BF9D1 /* BrainTreeTestTests */,
 			);
 		};
 /* End PBXProject section */
@@ -228,13 +165,6 @@
 				A4B259651B441D6E000BF9D1 /* Main.storyboard in Resources */,
 				A4B2596A1B441D6E000BF9D1 /* LaunchScreen.xib in Resources */,
 				A4B259671B441D6E000BF9D1 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A4B2596D1B441D6E000BF9D1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,23 +214,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A4B2596B1B441D6E000BF9D1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A4B259761B441D6E000BF9D1 /* BrainTreeTestTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		A4B259711B441D6E000BF9D1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A4B259551B441D6E000BF9D1 /* BrainTreeTest */;
-			targetProxy = A4B259701B441D6E000BF9D1 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A4B259631B441D6E000BF9D1 /* Main.storyboard */ = {
@@ -358,7 +272,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -395,7 +309,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -409,7 +323,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				INFOPLIST_FILE = BrainTreeTest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "65f2a6f8-891d-4f06-b6ae-31c44eb92877";
@@ -423,44 +337,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				INFOPLIST_FILE = BrainTreeTest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "65f2a6f8-891d-4f06-b6ae-31c44eb92877";
-			};
-			name = Release;
-		};
-		A4B2597D1B441D6E000BF9D1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = BrainTreeTestTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BrainTreeTest.app/BrainTreeTest";
-			};
-			name = Debug;
-		};
-		A4B2597E1B441D6E000BF9D1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = BrainTreeTestTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BrainTreeTest.app/BrainTreeTest";
 			};
 			name = Release;
 		};
@@ -481,15 +361,6 @@
 			buildConfigurations = (
 				A4B2597A1B441D6E000BF9D1 /* Debug */,
 				A4B2597B1B441D6E000BF9D1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A4B2597C1B441D6E000BF9D1 /* Build configuration list for PBXNativeTarget "BrainTreeTestTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A4B2597D1B441D6E000BF9D1 /* Debug */,
-				A4B2597E1B441D6E000BF9D1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
