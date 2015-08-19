@@ -9,3 +9,7 @@
 `pod 'PayPal-iOS-SDK', '2.11.1'`
 
 3] Payment demo using stripe in iOS
+
+4] Payment demo added Payeezy (first data payments) [alpha version]
+
+`pod 'PayeezySDK', :git => 'https://github.com/payeezy/payeezy_ios.git'`

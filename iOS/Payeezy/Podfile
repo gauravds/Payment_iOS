@@ -1,0 +1,8 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, '6.0'
+
+pod 'AFNetworking', '2.5.3'
+pod 'MBProgressHUD', '0.8'
+pod 'JSONModel', '1.0.0'
+pod 'BKMoneyKit', '0.0.5'
+pod 'PayeezySDK', :git => 'https://github.com/payeezy/payeezy_ios.git'
