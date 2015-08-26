@@ -8,15 +8,11 @@
  @discussion
  
  Payeezy supports the following method of payments
- * Purchase
- * Pre-Authorization (includes $0 Auth)
- * Pre-Authorization Completion
- * Refund
- * Void
- * Tagged Pre-Authorization Completion
- * Tagged Void
- * Tagged Refund
- * For API processing details, click here https://developer.payeezy.com/integration
+ * Credit Card Payments
+ * PayPal Transactions
+ * Gift Card (via ValueLink) Transactions
+ * eCheck (via TeleCheck) Transactions
+ For API processing details, click here https://developer-qa.payeezy.com/integration
  */
 
 #import <Foundation/Foundation.h>
@@ -52,7 +48,7 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
 
 
 /*!
- @discussion
+ @discussion 
  PayeezyClient 3DS method that takes in encoded payment data object - PKPaymentRequestToken returns
  a response and error
  Use this method to make 3-D Secure Transaction that requires a 3-D Secure cryptogram (value of CAVV)
@@ -75,16 +71,6 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
                                merchantRef:(NSString *)merchantRef
                                 completion:(void(^)(NSDictionary *response, NSError *error))completion;
 
--(void)submitGetFDTokenForCreditCard:(NSString*)cardType
-                      cardHolderName:(NSString*)cardHolderName
-                          cardNumber:(NSString*)cardNumber
-             cardExpirymMonthAndYear:(NSString*)cardExpMMYY
-                             cardCVV:(NSString*)cardCVV
-                                type:(NSString*)type
-                                auth:(NSString*)auth
-                            ta_token:(NSString*)ta_token
-                          completion:(void (^)(NSDictionary *dict, NSError* error))completion;
-
 /*!
  @discussion
  PayeezyClient method to process credit card payments regardless to PKPayment supported devices
@@ -101,22 +87,44 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
  @param totalAmount
  @param merchantRef
  @result Returns Returns payload response string
- 
+
  */
 
--(void)submitAuthorizePurchaseTransactionWithCreditCardDetails:(NSString*)cardCVV
-                                                   cardExpMMYY:(NSString*)cardExpMMYY
-                                                    cardNumber:(NSString*)cardNumber
-                                                cardHolderName:(NSString*)cardHolderName
-                                                      cardType:(NSString*)cardType
-                                                  currencyCode:(NSString*)currencyCode
-                                                   totalAmount:(NSString*)totalAmount
-                                                   merchantRef:(NSString*)merchantRef
-                                               transactionType:(NSString*)transactionType
-                                                    token_type:(NSString*)token_type
-                                                        method:(NSString*)method
-                                                    completion:(void (^)(NSDictionary *dict, NSError* error))completion;
+-(void)submitAuthorizeTransactionWithCreditCardDetails:(NSString*)cardType
+                                        cardHolderName:(NSString*)cardHolderName
+                                            cardNumber:(NSString*)cardNumber
+                               cardExpirymMonthAndYear:(NSString*)cardExpMMYY
+                                               cardCVV:(NSString*)cardCVV
+                                          currencyCode:(NSString*)currenyCode
+                                           totalAmount:(NSString*)totalAmount
+                              merchantRefForProcessing:(NSString*)merchantRef
+                                            completion:(void (^)(NSDictionary *dict, NSError* error))completion;
 
+/*!
+ @discussion
+ Use this method to submit payments credit and debit cards. Supported transaction type is 'Purchase'
+ It supports Visa payments, MasterCard payments,  American Express payments and Discover payments
+ @see For more information {@link https://developer.payeezy.com/payeezy-api-reference/apis/credit-card-payments}
+ @param cardType
+ @param cardHolderName
+ @param cardNumber
+ @param cardExpMMYY
+ @param cardCVV
+ @param currencyCode
+ @param totalAmount
+ @param merchantRef
+ @result Returns Returns payload response string
+ */
+
+-(void)submitPurchaseTransactionWithCreditCardDetails:(NSString*)cardType
+                                       cardHolderName:(NSString*)cardHolderName
+                                           cardNumber:(NSString*)cardNumber
+                              cardExpirymMonthAndYear:(NSString*)cardExpMMYY
+                                              cardCVV:(NSString*)cardCVV
+                                         currencyCode:(NSString*)currencyCode
+                                          totalAmount:(NSString*)totalAmount
+                             merchantRefForProcessing:(NSString*)merchantRef
+                                           completion:(void (^)(NSDictionary *dict, NSError* error))completion;
 
 
 /*!
@@ -136,13 +144,13 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
 -(void)submitVoidCaptureRefundTransactionWithCreditCardDetails:(NSString*)merchantRef
                                                 transactiontag:(NSString*)transactiontag
                                                transactionType:(NSString*)transactionType
-                                                 transactionId:(NSString*)transactionId
+                                               transactionId:(NSString*)transactionId
                                              paymentMethodType:(NSString*)paymentMethodType
                                                    totalAmount:(NSString*)totalAmount
                                                   currencyCode:(NSString*)currencyCode
                                                     completion:(void (^)(NSDictionary *dict, NSError* error))completion;
 
-/*!
+/*! 
  @discussion
  this method support association-sponsored Address Verification Services
  @param cardType
@@ -193,17 +201,17 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
 
 /*!
  @discussion
- A descriptor is a piece of identifying information about a merchant, e.g. business name, phone number,
- city and/or state, which appears on buyers’ credit/debit card statements. These descriptors remind cardholders
- of the details of the purchase and give them a way to contact the merchant. The standard descriptor information
- that gets passed through to the cardholder’s statement is the DBA name and customer service phone number that
- you provide with your merchant account application. While it is the card issuer’s discretion as to how many
- characters will show up in each field, if you keep the DBA Name field to fewer than 22 characters and the city
- field to fewer than 11 characters they should all show up on the cardholder’s statement. Visa requires MOTO merchants
- to put a phone number in the City field. Ecommerce merchants may use the City field for a URL, email address
- or phone number. There are additional fields that can be used; however, the majority of those will not appear
- on a statement. Ex:Soft Descriptor: ABCMovies.com Caddyshack 8885551212 Note:In this example, ABCMovies.com and
- Caddyshack are entered in the DBA Name field.Phone numbers should always be entered with numeric characters only.
+   A descriptor is a piece of identifying information about a merchant, e.g. business name, phone number,
+   city and/or state, which appears on buyers’ credit/debit card statements. These descriptors remind cardholders
+   of the details of the purchase and give them a way to contact the merchant. The standard descriptor information
+   that gets passed through to the cardholder’s statement is the DBA name and customer service phone number that
+   you provide with your merchant account application. While it is the card issuer’s discretion as to how many
+   characters will show up in each field, if you keep the DBA Name field to fewer than 22 characters and the city
+   field to fewer than 11 characters they should all show up on the cardholder’s statement. Visa requires MOTO merchants
+   to put a phone number in the City field. Ecommerce merchants may use the City field for a URL, email address
+   or phone number. There are additional fields that can be used; however, the majority of those will not appear
+   on a statement. Ex:Soft Descriptor: ABCMovies.com Caddyshack 8885551212 Note:In this example, ABCMovies.com and
+   Caddyshack are entered in the DBA Name field.Phone numbers should always be entered with numeric characters only.
  @see For more information {@link  https://developer.payeezy.com/payeezy-api-reference/apis/credit-card-payments}
  @param totalAmount
  @param transactionType
@@ -248,7 +256,7 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
 
 /*!
  @discussion
- 
+
  submitPurchaseTransactionWithSoftSescriptorsCreditCardDetails()
  A descriptor is a piece of identifying information about a merchant, e.g. business name, phone number,
  city and/or state, which appears on buyers’ credit/debit card statements. These descriptors remind cardholders
@@ -287,9 +295,9 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
 
 
 /*!
- @discussion
- submitAuthorizeTransactionWithRecurringPaymentCreditCardDetails()
- Use this method for 'Subscriptions' or 'Split-Shipments' using a previously authorized transaction
+  @discussion
+  submitAuthorizeTransactionWithRecurringPaymentCreditCardDetails()
+  Use this method for 'Subscriptions' or 'Split-Shipments' using a previously authorized transaction
  @see For more information {@link  https://developer.payeezy.com/payeezy-api-reference/apis/recurring-payments-split-shipment}
  */
 
@@ -314,8 +322,8 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
                                                             completion:(void (^)(NSDictionary *dict, NSError* error))completion;
 
 /*!
- @discussion
- PayeezyClient method to process credit card payments regardless to PKPayment supported devices
+  @discussion
+  PayeezyClient method to process credit card payments regardless to PKPayment supported devices
  @see For more information {@link https://developer.payeezy.com/payeezy-api-reference/apis/recurring-payments-split-shipment}
  */
 
@@ -330,10 +338,10 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
                                     cardExpirymMonthAndYear:(NSString*)cardExpirymMonthAndYear
                                                     cardCVV:(NSString*)cardCVV
                                                eciIndicator:(NSString*)eciIndicator
-                                                 completion:(void (^)(NSDictionary *dict, NSError* error))completion;
+                                                           completion:(void (^)(NSDictionary *dict, NSError* error))completion;
 
 /*!
- @discussion
+  @discussion
  Level  II
  Level 2 data fields such as Freight, Duty, etc. - values are for informational purposes only and are not
  directly reflected in the Total Amount field for the transaction when processed. It is up to the Merchant
@@ -381,7 +389,7 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
  "unit_cost": "{number}",
  "unit_of_measure": "{string}"
  }]
- }
+ } 
  @endcode
  @see  For more information {@link  https://developer.payeezy.com/payeezy-api-reference/apis/credit-card-payments}
  @result Returns payload response string
@@ -398,7 +406,7 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
                                                 completion:(void (^)(NSDictionary *dict, NSError* error))completion;
 
 /*!
- @discussion
+  @discussion
  submitPurchaseTransactionWithL2L3CreditCardDetails()
  Level  II
  Level 2 data fields such as Freight, Duty, etc. - values are for informational purposes only and are not
@@ -597,7 +605,7 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
                                                completion:(void (^)(NSDictionary *dict, NSError* error))completion;
 
 /*!
- @discussion
+  @discussion
  PayeezyClient method to process credit card payments regardless to PKPayment supported devices
  @param totalAmount
  @param transactionType
@@ -660,7 +668,7 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
  @param currencyCode
  @result Returns payload response string
  @see
- */
+*/
 
 -(void)submitActivationTransactionValueLink:(NSString*)cardHolderName
                                  cardNumber:(NSString*)cardNumber
@@ -673,9 +681,9 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
                                  completion:(void (^)(NSDictionary *dict, NSError* error))completion;
 
 /*!
- @discussion
- PayeezyClient method to process credit card payments regardless to PKPayment supported devices
- Use this method to do transactions via tele-check. Supported transactions are Purchase.
+  @discussion
+  PayeezyClient method to process credit card payments regardless to PKPayment supported devices
+  Use this method to do transactions via tele-check. Supported transactions are Purchase.
  @see For more information, see {@link https://developer.payeezy.com/test_smart_docs/apis/post/transactions-8 }
  @param checkNumber
  @param checkType
@@ -735,11 +743,11 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
                                         completion:(void (^)(NSDictionary *dict, NSError* error))completion;
 
 /*!
- @discussion
- PayeezyClient method to process credit card payments regardless to PKPayment supported devices
- Use this method for 'Subscriptions' or 'Split Shipments' using a previously authorized transaction.
- Split shipment
- Sample payload for split payment is shown below
+  @discussion
+  PayeezyClient method to process credit card payments regardless to PKPayment supported devices
+  Use this method for 'Subscriptions' or 'Split Shipments' using a previously authorized transaction.
+  Split shipment
+  Sample payload for split payment is shown below
  @code
  split_shipment
  This field is used to provide the shipment fraction and billed for the fraction of the total transaction amount.
@@ -804,8 +812,6 @@ FOUNDATION_EXPORT const unsigned char PayeezyClientVersionString[];
 @property (nonatomic,strong) NSString* apiKey;
 @property (nonatomic,strong) NSString* apiSecret;
 @property (nonatomic,strong) NSString* merchantToken;
-@property (nonatomic,strong) NSString* merchantIdentifier;
-@property (nonatomic,strong) NSString* trToken;
 @property (nonatomic,strong) NSString* environment;
 @property (nonatomic,strong) NSString* url;
 

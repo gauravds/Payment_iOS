@@ -23,29 +23,17 @@ PODS:
   - BKMoneyKit (0.0.5)
   - JSONModel (1.0.0)
   - MBProgressHUD (0.8)
-  - PayeezySDK (2.0.0)
 
 DEPENDENCIES:
   - AFNetworking (= 2.5.3)
   - BKMoneyKit (= 0.0.5)
   - JSONModel (= 1.0.0)
   - MBProgressHUD (= 0.8)
-  - PayeezySDK (from `https://github.com/payeezy/payeezy_ios.git`)
-
-EXTERNAL SOURCES:
-  PayeezySDK:
-    :git: https://github.com/payeezy/payeezy_ios.git
-
-CHECKOUT OPTIONS:
-  PayeezySDK:
-    :commit: cb8b4d56ecc40970789cddededf8057a808d2804
-    :git: https://github.com/payeezy/payeezy_ios.git
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   BKMoneyKit: acd201075dae1e99d146ea97bf3b756152b519fd
   JSONModel: ff487c083667d8727b155c27241013cbccd17bab
   MBProgressHUD: 8688c331cb64702283be37ab8d7d329cdd25f251
-  PayeezySDK: 71495b0c5803254d593e2c9f8464e099fac8af79
 
 COCOAPODS: 0.36.4

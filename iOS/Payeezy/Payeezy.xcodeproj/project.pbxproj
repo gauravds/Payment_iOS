@@ -7,9 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A41D09271B8D9D730086F927 /* PayeezySDK.m in Sources */ = {isa = PBXBuildFile; fileRef = A41D09261B8D9D730086F927 /* PayeezySDK.m */; };
+		A41D092E1B8D9DA90086F927 /* SBJson4StreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = A41D09291B8D9DA90086F927 /* SBJson4StreamWriter.m */; };
+		A41D092F1B8D9DA90086F927 /* SBJson4StreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = A41D092B1B8D9DA90086F927 /* SBJson4StreamWriterState.m */; };
+		A41D09301B8D9DA90086F927 /* SBJson4Writer.m in Sources */ = {isa = PBXBuildFile; fileRef = A41D092D1B8D9DA90086F927 /* SBJson4Writer.m */; };
+		A4348E811B8CA01100A02A68 /* CreditCardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A4348E801B8CA01100A02A68 /* CreditCardInfo.m */; };
 		A495227F1B8494C1003BEC4A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A495227E1B8494C1003BEC4A /* main.m */; };
 		A49522821B8494C1003BEC4A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A49522811B8494C1003BEC4A /* AppDelegate.m */; };
-		A49522851B8494C1003BEC4A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A49522841B8494C1003BEC4A /* ViewController.m */; };
+		A49522851B8494C1003BEC4A /* AViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A49522841B8494C1003BEC4A /* AViewController.m */; };
 		A49522881B8494C1003BEC4A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A49522861B8494C1003BEC4A /* Main.storyboard */; };
 		A495228A1B8494C1003BEC4A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A49522891B8494C1003BEC4A /* Images.xcassets */; };
 		A5CF31107C9D031C50D4EC30 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2781A13FDA96B820FC69B3 /* libPods.a */; };
@@ -19,14 +24,24 @@
 		0A2781A13FDA96B820FC69B3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BD102E420F3C689B7022088 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		50ACF33C3C75E29CEFC7A7AD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		A41D09251B8D9D730086F927 /* PayeezySDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayeezySDK.h; sourceTree = SOURCE_ROOT; };
+		A41D09261B8D9D730086F927 /* PayeezySDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayeezySDK.m; sourceTree = SOURCE_ROOT; };
+		A41D09281B8D9DA90086F927 /* SBJson4StreamWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson4StreamWriter.h; sourceTree = "<group>"; };
+		A41D09291B8D9DA90086F927 /* SBJson4StreamWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJson4StreamWriter.m; sourceTree = "<group>"; };
+		A41D092A1B8D9DA90086F927 /* SBJson4StreamWriterState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson4StreamWriterState.h; sourceTree = "<group>"; };
+		A41D092B1B8D9DA90086F927 /* SBJson4StreamWriterState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJson4StreamWriterState.m; sourceTree = "<group>"; };
+		A41D092C1B8D9DA90086F927 /* SBJson4Writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson4Writer.h; sourceTree = "<group>"; };
+		A41D092D1B8D9DA90086F927 /* SBJson4Writer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJson4Writer.m; sourceTree = "<group>"; };
+		A4348E7F1B8CA01100A02A68 /* CreditCardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditCardInfo.h; sourceTree = "<group>"; };
+		A4348E801B8CA01100A02A68 /* CreditCardInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardInfo.m; sourceTree = "<group>"; };
 		A45F0AD81B8498FE0068BFC9 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		A49522791B8494C1003BEC4A /* Payeezy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Payeezy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A495227D1B8494C1003BEC4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A495227E1B8494C1003BEC4A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A49522801B8494C1003BEC4A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A49522811B8494C1003BEC4A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A49522831B8494C1003BEC4A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		A49522841B8494C1003BEC4A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		A49522831B8494C1003BEC4A /* AViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AViewController.h; sourceTree = "<group>"; };
+		A49522841B8494C1003BEC4A /* AViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AViewController.m; sourceTree = "<group>"; };
 		A49522871B8494C1003BEC4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A49522891B8494C1003BEC4A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,8 +89,18 @@
 			children = (
 				A49522801B8494C1003BEC4A /* AppDelegate.h */,
 				A49522811B8494C1003BEC4A /* AppDelegate.m */,
-				A49522831B8494C1003BEC4A /* ViewController.h */,
-				A49522841B8494C1003BEC4A /* ViewController.m */,
+				A49522831B8494C1003BEC4A /* AViewController.h */,
+				A49522841B8494C1003BEC4A /* AViewController.m */,
+				A4348E7F1B8CA01100A02A68 /* CreditCardInfo.h */,
+				A4348E801B8CA01100A02A68 /* CreditCardInfo.m */,
+				A41D09251B8D9D730086F927 /* PayeezySDK.h */,
+				A41D09261B8D9D730086F927 /* PayeezySDK.m */,
+				A41D09281B8D9DA90086F927 /* SBJson4StreamWriter.h */,
+				A41D09291B8D9DA90086F927 /* SBJson4StreamWriter.m */,
+				A41D092A1B8D9DA90086F927 /* SBJson4StreamWriterState.h */,
+				A41D092B1B8D9DA90086F927 /* SBJson4StreamWriterState.m */,
+				A41D092C1B8D9DA90086F927 /* SBJson4Writer.h */,
+				A41D092D1B8D9DA90086F927 /* SBJson4Writer.m */,
 				A49522861B8494C1003BEC4A /* Main.storyboard */,
 				A49522891B8494C1003BEC4A /* Images.xcassets */,
 				A495227C1B8494C1003BEC4A /* Supporting Files */,
@@ -206,7 +231,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A49522851B8494C1003BEC4A /* ViewController.m in Sources */,
+				A4348E811B8CA01100A02A68 /* CreditCardInfo.m in Sources */,
+				A49522851B8494C1003BEC4A /* AViewController.m in Sources */,
+				A41D09301B8D9DA90086F927 /* SBJson4Writer.m in Sources */,
+				A41D092E1B8D9DA90086F927 /* SBJson4StreamWriter.m in Sources */,
+				A41D092F1B8D9DA90086F927 /* SBJson4StreamWriterState.m in Sources */,
+				A41D09271B8D9D730086F927 /* PayeezySDK.m in Sources */,
 				A49522821B8494C1003BEC4A /* AppDelegate.m in Sources */,
 				A495227F1B8494C1003BEC4A /* main.m in Sources */,
 			);
@@ -312,6 +342,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Payeezy/PrefixHeader.pch";
 				INFOPLIST_FILE = Payeezy/Info.plist;
@@ -327,6 +361,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Payeezy/PrefixHeader.pch";
 				INFOPLIST_FILE = Payeezy/Info.plist;

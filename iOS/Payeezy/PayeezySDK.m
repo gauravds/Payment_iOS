@@ -2,7 +2,7 @@
 //  PayeezySDK.m
 //  PayeezyClientSample
 //
-//  Created by First Data Corporation on 5/28/2015.
+//  Created by Atul Parmar on 2/24/15.
 //  Copyright (c) 2015 First Data Corporation. All rights reserved.
 //
 
@@ -20,10 +20,11 @@
 #define STATUS_KEY_NAME @"validation_status"
 #define SERVER_ERROR_MSG @"Internal Server Error. Please try later"
 
-#define URL_TRANSACTIONS_CERT @"https://api-cert.payeezy.com/v1/transactions/"
-#define URL_TRANSACTIONS_PROD @"https://api-cert.payeezy.com/v1/transactions/"
-#define URL_TRANSACTIONS_CAT @"https://api-cert.payeezy.com/v1/transactions/"
-#define URL_TRANSACTIONS_QA @"https://api-cert.payeezy.com/v1/transactions/"
+#define URL_TRANSACTIONS_CERT @"https://api-cert.payeezy.com/v1/transactions"
+#define URL_TRANSACTIONS_PROD @"https://api.payeezy.com/v1/transactions"
+#define URL_TRANSACTIONS_CAT @"https://api-cat.payeezy.com/v1/transactions"
+#define URL_TRANSACTIONS_QA @"https://api-qa.payeezy.com/v1/transactions"
+
 
 @implementation PayeezySDK {
 }
@@ -42,7 +43,6 @@
  @see
  */
 
-
 -(id)initWithApiKey:(NSString *)apiKey
           apiSecret:(NSString *)apiSecret
       merchantToken:(NSString *)merchantToken
@@ -54,6 +54,7 @@
         self.apiSecret = apiSecret;
         self.merchantToken = merchantToken;
         self.url= url;
+        //        networkReachability = [Reachability reachabilityForInternetConnection];
     }
     return self;
 }
@@ -100,7 +101,7 @@
  *  PAuth 1.0 - Preferred Authentication using HMAC SHA256
  *
  *  This authentication scheme is been deviced to prevent payload tampering during transaction processing.
- *  Method: Append the following 5 key params (in same order) to obain the HMAC message string and compute
+ *  Method: Append the following 5 key params (in same order) to obain the HMAC message string and compute 
  *  the HMAC of it using apiSecret. This is a shared secret between the developer and Payeezy.
  *
  *
@@ -131,7 +132,7 @@
     
     SBJson4Writer * parseString = [[SBJson4Writer alloc] init];
     
-    NSString *payloadString = [parseString stringWithObject:payload];
+    NSString* payloadString = [parseString stringWithObject:payload];
     
     NSString *hmacData = [NSString stringWithFormat:@"%@%@%@%@%@",self.apiKey,nonce,timeStamp,self.merchantToken,payloadString];
     
@@ -143,61 +144,18 @@
     
     NSData *HMAC = [[NSData alloc] initWithBytes:outputHMAC length:sizeof(outputHMAC)];
     
+    
+    //    get NSData as hex string - another alternative to use deprecated method -(NSString*)convertByteArrayToHexString:(NSData*)dataToBeConverted{
+    //    NSString* hmacString = [self convertByteArrayToHexString:HMAC]; // Get HMAC hash in hex
+    
     //    TODO: better way to convert ByteArray to hex.
     
     NSString*hmacString = [self convertByteArrayToHexString:HMAC];
     
+    
     //    Return Base64 of (HMAC hash in hex)
     return [[hmacString dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
     
-}
-
-
-/**
- 
- @param cardCVV
- @param cardExpMMYY
- @param cardNumber
- @param cardExpMMYY
- @param phoneType
- @param phoneNumber
- @param billingCity
- @param billingCountry
- @param billingEmail
- @param billingStreet
- @param billingZipCode
- @param currencyCode
- @param totalAmount
- @param transactionType
- @param merchantRef
- **/
--(void)submitAuthorizePurchaseTransactionWithCreditCardDetails:(NSString*)cardCVV
-                                                   cardExpMMYY:(NSString*)cardExpMMYY
-                                                    cardNumber:(NSString*)cardNumber
-                                                cardHolderName:(NSString*)cardHolderName
-                                                      cardType:(NSString*)cardType
-                                                  currencyCode:(NSString*)currencyCode
-                                                   totalAmount:(NSString*)totalAmount
-                                                   merchantRef:(NSString*)merchantRef
-                                               transactionType:(NSString*)transactionType
-                                                    token_type:(NSString*)token_type
-                                                        method:(NSString*)method
-                                                    completion:(void (^)(NSDictionary *dict, NSError* error))completion
-{
-    [self postATransactionWithPayload:[self constructCreditCardPayloadWithCardCVV:cardCVV cardExpMMYY:cardExpMMYY cardNumber:cardNumber cardHolderName:cardHolderName cardType:cardType currencyCode:currencyCode totalAmount:totalAmount merchantRef:merchantRef transactionType:transactionType token_type:token_type method:method]  completion:^(NSDictionary *dict, NSError *error){
-        
-        if (error) {
-            completion(nil, error);
-            return;
-        }
-        
-        if([dict valueForKey:STATUS_KEY_NAME]){ // valid response
-            
-            completion(dict,nil);
-        }else{
-            completion(dict,[NSError errorWithDomain:SERVER_ERROR_MSG code:101 userInfo:nil]);
-        }
-    }];
 }
 
 
@@ -396,7 +354,7 @@
     
     NSDictionary *level2_dict = [NSDictionary dictionaryWithObjects:level2Values forKeys:level2keys];
     
-    
+ 
     
     NSArray *billingAddressKeys = @[
                                     @"city",
@@ -424,7 +382,7 @@
                              @"credit_card",
                              @"level2",
                              @"billing_address"
-                             ];
+                            ];
     
     NSArray *payloadValues = @[
                                totalAmount,
@@ -594,7 +552,7 @@
                                        ];
     
     NSDictionary *ship_to_address_dict = [NSDictionary dictionaryWithObjects:ship_to_addressValues forKeys:ship_to_addresskeys];
-    
+
     NSDictionary *firstJsonDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                          @"item 1",@"description",
                                          @"5",@"quantity",
@@ -663,7 +621,7 @@
                                crediCard_dict,
                                level2_dict,
                                level3_dict
-                               
+                              
                                ];
     
     return [NSDictionary dictionaryWithObjects:payloadValues forKeys:payloadKeys];
@@ -688,41 +646,41 @@
  */
 
 - (NSDictionary*)constructActivationTransactionValueLinkPayload:(NSString *)cardHolderName
-                                                     cardNumber:(NSString *)cardNumber cardType:(NSString *)cardType cardCost:(NSString*)cardCost totalAmt:(NSString *)totalAmt transactiontype:(NSString *)transactiontype pMethod:(NSString *)pMethod currencyCode:(NSString *)currencyCode
+   cardNumber:(NSString *)cardNumber cardType:(NSString *)cardType cardCost:(NSString*)cardCost totalAmt:(NSString *)totalAmt transactiontype:(NSString *)transactiontype pMethod:(NSString *)pMethod currencyCode:(NSString *)currencyCode
 {
     NSArray *giftCardKeys = @[
-                              @"cardholder_name",
-                              @"cc_number",
-                              @"credit_card_type",
-                              @"card_cost"
-                              ];
+                               @"cardholder_name",
+                               @"cc_number",
+                               @"credit_card_type",
+                               @"card_cost"
+                            ];
     
     NSArray *giftCardValues = @[
-                                cardHolderName,
-                                cardNumber,
-                                cardType,
-                                cardCost
-                                ];
+                                 cardHolderName,
+                                 cardNumber,
+                                 cardType,
+                                 cardCost
+                                 ];
     
     NSDictionary *giftCard_dict = [NSDictionary dictionaryWithObjects:giftCardValues forKeys:giftCardKeys];
     
     NSArray *valueLinkPayloadKeys = @[
-                                      @"amount",
-                                      @"transaction_type",
-                                      @"method",
-                                      @"amount",
-                                      @"currency_code",
-                                      @"valuelink"
-                                      ];
+                             @"amount",
+                             @"transaction_type",
+                             @"method",
+                             @"amount",
+                             @"currency_code",
+                             @"valuelink"
+                             ];
     
     NSArray *valueLinkPayloadValues = @[
-                                        totalAmt,
-                                        transactiontype,
-                                        pMethod,
-                                        totalAmt,
-                                        currencyCode,
-                                        giftCard_dict
-                                        ];
+                               totalAmt,
+                               transactiontype,
+                               pMethod,
+                               totalAmt,
+                               currencyCode,
+                               giftCard_dict
+                               ];
     
     return [NSDictionary dictionaryWithObjects:valueLinkPayloadValues forKeys:valueLinkPayloadKeys];
 }
@@ -766,20 +724,20 @@
     
     
     NSArray *payloadKeys = @[
-                             @"amount",
-                             @"transaction_type",
-                             @"method",
-                             @"currency_code",
-                             @"credit_card"
-                             ];
+                                      @"amount",
+                                      @"transaction_type",
+                                      @"method",
+                                      @"currency_code",
+                                      @"credit_card"
+                                      ];
     
     NSArray *payloadValues = @[
-                               amount,
-                               transactiontype,
-                               pMethod,
-                               currencyCode,
-                               creditCard_dict
-                               ];
+                                        amount,
+                                        transactiontype,
+                                        pMethod,
+                                        currencyCode,
+                                        creditCard_dict
+                                        ];
     
     return [NSDictionary dictionaryWithObjects:payloadValues forKeys:payloadKeys];
 }
@@ -847,23 +805,9 @@
  @param transactionType
  @return Returns
  @see
- 
- Sample Payload:
- {
-	"type": "FDToken",
-	"credit_card": {
- "type": "VISA",
- "cardholder_name": "JohnSmith",
- "card_number": "4788250000028291",
- "exp_date": "1030",
- "cvv": "123"
- },
-	"auth": "false",
-	"ta_token": "NOIW"
- }
  */
 
-- (NSDictionary*)constructGenerateFDTokenForCreditCard:(NSString *)cardType cardHolderName:(NSString *)cardHolderName cardNumber:(NSString *)cardNumber  cardExpMMYY:(NSString *)cardExpMMYY  cardCVV:(NSString *)cardCVV type:(NSString *)type auth:(NSString *)auth ta_token:(NSString *)ta_token
+- (NSDictionary*)constructCreditCardPayloadWithCardCVV:(NSString *)cardCVV cardExpMMYY:(NSString *)cardExpMMYY cardNumber:(NSString *)cardNumber cardHolderName:(NSString *)cardHolderName cardType:(NSString *)cardType currencyCode:(NSString *)currencyCode totalAmount:(NSString *)totalAmount merchantRef:(NSString *)merchantRef transactionType:(NSString*)transactionType
 {
     NSArray *crediCardKeys = @[
                                @"type",
@@ -884,108 +828,24 @@
     NSDictionary *crediCard_dict = [NSDictionary dictionaryWithObjects:crediCardValues forKeys:crediCardKeys];
     
     NSArray *payloadKeys = @[
-                             @"type",
-                             @"credit_card",
-                             @"auth",
-                             @"ta_token",
+                             @"merchant_ref",
+                             @"transaction_type",
+                             @"method",
+                             @"amount",
+                             @"currency_code",
+                             @"credit_card"
                              ];
     
     NSArray *payloadValues = @[
-                               type,
-                               crediCard_dict,
-                               auth,
-                               ta_token
+                               merchantRef,
+                               transactionType,
+                               @"credit_card",
+                               totalAmount,
+                               currencyCode,
+                               crediCard_dict
                                ];
     
     return [NSDictionary dictionaryWithObjects:payloadValues forKeys:payloadKeys];
-}
-
-
-/**
- Define request structure for CreditCard Payload With Card CVV
- @param cardCVV  credit-card payload parameter
- @param cardExpMMYY credit-card payload parameter
- @param cardNumber credit-card payload parameter
- @param cardHolderName credit-card payload parameter
- @param cardType creditcard payload parameter
- @param currencyCode
- @param totalAmount
- @param cardType
- @param currencyCode
- @param totalAmount
- @param merchantRef
- @param transactionType
- @return Returns
- @see
- 
- {
-	"merchant_ref": "Astonishing-Sale",
-	"transaction_type": "authorize",
-	"method": "token",
-	"amount": "200",
-	"currency_code": "USD",
-	"token": {
- "token_type": "FDToken",
- "token_data": {
- "type": "visa",
- "value": "2537446225198291",
- "cardholder_name": "JohnSmith",
- "exp_date": "1030"
- }
-	}
- }
- */
-
-- (NSDictionary*)constructCreditCardPayloadWithCardCVV:(NSString *)cardCVV cardExpMMYY:(NSString *)cardExpMMYY cardNumber:(NSString *)cardNumber cardHolderName:(NSString *)cardHolderName cardType:(NSString *)cardType currencyCode:(NSString *)currencyCode totalAmount:(NSString *)totalAmount merchantRef:(NSString *)merchantRef transactionType:(NSString*)transactionType token_type:(NSString *)token_type method:(NSString *)method
-{
-    
-    NSArray *token_dataKeys = @[
-                                @"type",
-                                @"value",
-                                @"cardholder_name",
-                                @"exp_date"
-                                ];
-    
-    NSArray *token_dataValues = @[
-                                  cardType,
-                                  cardNumber,
-                                  cardHolderName,
-                                  cardExpMMYY
-                                  ];
-    
-    NSDictionary *token_data_dict = [NSDictionary dictionaryWithObjects:token_dataValues forKeys:token_dataKeys];
-    
-    NSArray *tokenKeys = @[
-                           @"token_type",
-                           @"token_data"
-                           ];
-    
-    NSArray *tokenValues = @[
-                             token_type,
-                             token_data_dict
-                             ];
-    
-    NSDictionary *token_dict = [NSDictionary dictionaryWithObjects:tokenValues forKeys:tokenKeys];
-    
-    NSArray *generateTokenKeys = @[
-                                   @"merchant_ref",
-                                   @"transaction_type",
-                                   @"method",
-                                   @"amount",
-                                   @"currency_code",
-                                   @"token"
-                                   ];
-    
-    NSArray *generateTokenValues = @[
-                                     merchantRef,
-                                     transactionType,
-                                     method,
-                                     totalAmount,
-                                     currencyCode,
-                                     token_dict
-                                     ];
-    
-    return [NSDictionary dictionaryWithObjects:generateTokenValues forKeys:generateTokenKeys];
 }
 
 
@@ -1034,7 +894,7 @@
                                  ];
     
     NSDictionary *crediCard_dict = [NSDictionary dictionaryWithObjects:crediCardValues forKeys:crediCardKeys];
-    
+
     
     NSArray *softDescriptorsKeys = @[
                                      @"dba_name",
@@ -1059,7 +919,7 @@
                                        ];
     
     NSDictionary *soft_descriptors_dict = [NSDictionary dictionaryWithObjects:softDescriptorsValues forKeys:softDescriptorsKeys];
-    
+
     
     NSArray *payloadKeys = @[
                              @"amount",
@@ -1157,7 +1017,7 @@
                                  cardHolderName,
                                  cardNumber,
                                  cardExpMMYY
-                                 ];
+                                ];
     
     NSDictionary *crediCard_dict = [NSDictionary dictionaryWithObjects:crediCardValues forKeys:crediCardKeys];
     
@@ -1175,7 +1035,7 @@
                                totalAmount,
                                transactionType,
                                merchantRef,
-                               @"credit_card",
+                               @"credit_card",   
                                currencyCode,
                                crediCard_dict,
                                billingAddress_dict
@@ -1241,87 +1101,87 @@
                                                    totalAmount:(NSString*)totalAmount
                                                   currencyCode:(NSString*)currencyCode
                                                    merchantRef:(NSString*)merchantRef
-{
+    {
     
-    
-    NSArray *billingAddressKeys = @[
-                                    @"street",
-                                    @"city",
-                                    @"state_province",
-                                    @"zip_postal_code",
-                                    @"country"
+        
+        NSArray *billingAddressKeys = @[
+                                        @"street",
+                                        @"city",
+                                        @"state_province",
+                                        @"zip_postal_code",
+                                        @"country"
+                                        ];
+        
+        NSArray *billingAddressValues = @[
+                                          street,
+                                          city,
+                                          stateProvince,
+                                          zipPostalCode,
+                                          country
+                                          ];
+        NSDictionary *billingAddress_dict = [NSDictionary dictionaryWithObjects:billingAddressValues forKeys:billingAddressKeys];
+        
+        NSArray *teleCheckKeys = @[
+                                    @"check_number",
+                                    @"check_type",
+                                    @"account_number",
+                                    @"routing_number",
+                                    @"accountholder_name",
+                                    @"customer_id_type",
+                                    @"customer_id_number",
+                                    @"client_email",
+                                    @"gift_card_amount",
+                                    @"vip",
+                                    @"clerk_id",
+                                    @"device_id",
+                                    @"release_type",
+                                    @"registration_number",
+                                    @"registration_date",
+                                    @"date_of_birth"
+                                ];
+        
+        NSArray *teleCheckValues = @[
+                                      checkNumber,
+                                      checkType,
+                                      accountNumber,
+                                      routingNumber,
+                                      accountholderName,
+                                      customerIdType,
+                                      customerIdNumber,
+                                      clientEmail,
+                                      giftCardAmount,
+                                      vip,
+                                      clerkId,
+                                      deviceId,
+                                      releaseType,
+                                      registrationNumber,
+                                      registrationDate,
+                                      dateOfBirth,
                                     ];
-    
-    NSArray *billingAddressValues = @[
-                                      street,
-                                      city,
-                                      stateProvince,
-                                      zipPostalCode,
-                                      country
+        NSDictionary *teleCheck_dict = [NSDictionary dictionaryWithObjects:teleCheckValues forKeys:teleCheckKeys];
+        
+        NSArray *teleCheckMainKeys = @[
+                                    @"method",
+                                    @"transaction_type",
+                                    @"amount",
+                                    @"currency_code",
+                                    @"merchant_ref",
+                                    @"tele_check",
+                                    @"billing_address"
+                                    
+                                    ];
+        
+        NSArray *teleCheckMainValues = @[
+                                      pMethod,
+                                      transactionType,
+                                      totalAmount,
+                                      currencyCode,
+                                      merchantRef,
+                                      teleCheck_dict,
+                                      billingAddress_dict
                                       ];
-    NSDictionary *billingAddress_dict = [NSDictionary dictionaryWithObjects:billingAddressValues forKeys:billingAddressKeys];
-    
-    NSArray *teleCheckKeys = @[
-                               @"check_number",
-                               @"check_type",
-                               @"account_number",
-                               @"routing_number",
-                               @"accountholder_name",
-                               @"customer_id_type",
-                               @"customer_id_number",
-                               @"client_email",
-                               @"gift_card_amount",
-                               @"vip",
-                               @"clerk_id",
-                               @"device_id",
-                               @"release_type",
-                               @"registration_number",
-                               @"registration_date",
-                               @"date_of_birth"
-                               ];
-    
-    NSArray *teleCheckValues = @[
-                                 checkNumber,
-                                 checkType,
-                                 accountNumber,
-                                 routingNumber,
-                                 accountholderName,
-                                 customerIdType,
-                                 customerIdNumber,
-                                 clientEmail,
-                                 giftCardAmount,
-                                 vip,
-                                 clerkId,
-                                 deviceId,
-                                 releaseType,
-                                 registrationNumber,
-                                 registrationDate,
-                                 dateOfBirth,
-                                 ];
-    NSDictionary *teleCheck_dict = [NSDictionary dictionaryWithObjects:teleCheckValues forKeys:teleCheckKeys];
-    
-    NSArray *teleCheckMainKeys = @[
-                                   @"method",
-                                   @"transaction_type",
-                                   @"amount",
-                                   @"currency_code",
-                                   @"merchant_ref",
-                                   @"tele_check",
-                                   @"billing_address"
-                                   
-                                   ];
-    
-    NSArray *teleCheckMainValues = @[
-                                     pMethod,
-                                     transactionType,
-                                     totalAmount,
-                                     currencyCode,
-                                     merchantRef,
-                                     teleCheck_dict,
-                                     billingAddress_dict
-                                     ];
-    
-    return [NSDictionary dictionaryWithObjects:teleCheckMainValues forKeys:teleCheckMainKeys];
+        
+        return [NSDictionary dictionaryWithObjects:teleCheckMainValues forKeys:teleCheckMainKeys];
 }
 
 /**
@@ -1343,7 +1203,7 @@
                              @"merchant_ref",
                              @"transaction_tag",
                              @"transaction_type",
-                             //  @"transaction_id",
+                           //  @"transaction_id",
                              @"method",
                              @"amount",
                              @"currency_code"
@@ -1353,7 +1213,7 @@
                                merchantRef,
                                transactionTag,
                                transactionType,
-                               //   transactionId,
+                            //   transactionId,
                                paymentMethodType,
                                totalAmount,
                                currencyCode
@@ -1373,7 +1233,7 @@
  @param currencyCode
  @return Returns payload string
  @see
- */
+  */
 
 - (NSDictionary*)constructSplitCreditCardPayload:(NSString *)merchantRef transactionTag:(NSString *)transactionTag  transactionType:(NSString*)transactionType paymentMethodType:(NSString *)paymentMethodType splitShipment:(NSString *)splitShipment totalAmount:(NSString *)totalAmount currencyCode:(NSString *)currencyCode
 {
@@ -1404,13 +1264,14 @@
 /**
  Define request structure for postATransactionWithPayload
  @param payload
- 
+
  */
 
 -(void) postATransactionWithPayload:(NSDictionary*)payload
                          completion:(void(^)(NSDictionary *dict, NSError *error))completion
 {
     BOOL networkStatus = [self isInternetReachable];
+    //    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
     if (!networkStatus) {
         completion(nil,[NSError errorWithDomain:@"No Internet Connection Found. Please connect to wifi or cellular data" code:100 userInfo:nil]);
     }else{
@@ -1428,6 +1289,8 @@
     
     NSString *hmacSignature = [self generateHMACforpayload:payload timeStamp:timeStamp nonce:nonce];
     
+   // NSLog(@"Signature=%@,timestamp=%@,nonce=%@",hmacSignature,timeStamp,nonce);
+    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.url]];
     
     // Specify that it will be a POST request
@@ -1441,19 +1304,16 @@
     [request setValue:nonce forHTTPHeaderField:@"nonce"];
     [request setValue:self.apiKey forHTTPHeaderField:@"apikey"];
     [request setValue:self.merchantToken forHTTPHeaderField:@"token"];
-    // new parameter added for 5/28 release
-    //[request setValue:self.merchantIdentifier forHTTPHeaderField:@"x-merchant-identifier"];
-    //[request setValue:self.trToken forHTTPHeaderField:@"trtoken"];
     
     // Convert your data and set your request's HTTPBody property
+    
     SBJson4Writer * parseString = [[SBJson4Writer alloc] init];
     
     NSString* payloadString = [parseString stringWithObject:payload];
+    
+   
+    
     request.HTTPBody = [payloadString dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSLog(@"URL: %@",self.url);
-    NSLog(@"Request: %@",payloadString);
-    
     
     if (!errDataConversion) {
         // Create url connection and fire request
@@ -1472,20 +1332,19 @@
                                                             JSONObjectWithData:data
                                                             options:NSJSONReadingAllowFragments
                                                             error:&errJSONConverison];
+                             NSLog(@"Request: %@",payloadString);
                             completion(responseObject, nil);
                         }else{
-                            
                             
                             NSDictionary* errorObject = [NSJSONSerialization
                                                          JSONObjectWithData:data
                                                          options:NSJSONReadingAllowFragments
                                                          error:&errJSONConverison];
-                            
+                            NSLog(@"Request: %@",payloadString);
                             completion(nil, [NSError errorWithDomain:@"Payeezy Error Info" code:[(NSHTTPURLResponse *) urlResponse statusCode] userInfo:errorObject]);
                         }
                     }
                 }else{
-                    
                     completion(nil,connectionError);
                 }
             }
@@ -1502,7 +1361,7 @@
 
 /**
  First API Transaction Methods
- 
+
  @param paymentData
  @param transactionType
  @param applicationData
@@ -1532,6 +1391,8 @@
     }else {
         self.url = URL_TRANSACTIONS_CERT;
     }
+    
+    //    self.url = ([[environment lowercaseString]  isEqual: @"test"])? URL_TRANSACTIONS_CERT: URL_TRANSACTIONS_PROD;
     
     NSError* nsDataConversionError;
     
@@ -1564,12 +1425,11 @@
     }];
 }
 
-
 /**
  * PayeezyClient method to process credit card payments regardless to PKPayment supported devices
  * Use this method to submit payments credit and debit cards. Supported transaction type is 'authorize'.
  * It supports Visa payments, MasterCard payments,  American Express payments and Discover payments
- * For more details refer https://developer.payeezy.com/payeezy-api-reference/apis/credit-card-payments
+ * For moee details refer https://developer.payeezy.com/payeezy-api-reference/apis/credit-card-payments
  @param cardType creditcard payload item
  @param cardHolderName
  @param cardNumber
@@ -1580,48 +1440,36 @@
  @param merchantRef
  @return Returns
  @see
- 
- Sample Payload:
- {
-	"type": "FDToken",
-	"credit_card": {
- "type": "VISA",
- "cardholder_name": "JohnSmith",
- "card_number": "4788250000028291",
- "exp_date": "1030",
- "cvv": "123"
- },
-	"auth": "false",
-	"ta_token": "NOIW"
- }
- 
  */
 
--(void)submitGetFDTokenForCreditCard:(NSString*)cardType
-                      cardHolderName:(NSString*)cardHolderName
-                          cardNumber:(NSString*)cardNumber
-             cardExpirymMonthAndYear:(NSString*)cardExpMMYY
-                             cardCVV:(NSString*)cardCVV
-                                type:(NSString*)type
-                                auth:(NSString*)auth
-                            ta_token:(NSString*)ta_token
-                          completion:(void (^)(NSDictionary *dict, NSError* error))completion
+-(void)submitAuthorizeTransactionWithCreditCardDetails:(NSString*)cardType
+                                        cardHolderName:(NSString*)cardHolderName
+                                            cardNumber:(NSString*)cardNumber
+                               cardExpirymMonthAndYear:(NSString*)cardExpMMYY
+                                               cardCVV:(NSString*)cardCVV
+                                          currencyCode:(NSString*)currencyCode
+                                           totalAmount:(NSString*)totalAmount
+                              merchantRefForProcessing:(NSString*)merchantRef
+                                            completion:(void (^)(NSDictionary *dict, NSError* error))completion
 {
     
-    [self postATransactionWithPayload:[self constructGenerateFDTokenForCreditCard:cardType cardHolderName:cardHolderName cardNumber:cardNumber  cardExpMMYY:cardExpMMYY  cardCVV:cardCVV type:type auth:auth ta_token:ta_token ]  completion:^(NSDictionary *dict, NSError *error){
+    [self postATransactionWithPayload:[self constructCreditCardPayloadWithCardCVV:cardCVV cardExpMMYY:cardExpMMYY cardNumber:cardNumber cardHolderName:cardHolderName cardType:cardType currencyCode:currencyCode totalAmount:totalAmount merchantRef:merchantRef transactionType:@"authorize"]  completion:^(NSDictionary *dict, NSError *error){
         
         if (error) {
             completion(nil, error);
             return;
         }
         
-        if([dict valueForKey:STATUS_KEY_NAME]){
+        if([dict valueForKey:STATUS_KEY_NAME]){ // valid response
+            
             completion(dict,nil);
         }else{
             completion(dict,[NSError errorWithDomain:SERVER_ERROR_MSG code:101 userInfo:nil]);
         }
     }];
 }
+
+
 
 
 -(void)submitAuthorizeSplitDiscoverTransaction:(NSString*)totalAmount
@@ -1634,26 +1482,26 @@
                                     completion:(void (^)(NSDictionary *dict, NSError* error))completion
 {
     [self postATransactionWithPayload:[self constructAuthorizeSplitDiscoverTransaction:totalAmount
-                                                                 split_transaction_tag:split_transaction_tag
-                                                                split_transaction_type:split_transaction_type
-                                                                  split_split_shipment:split_split_shipment
-                                                                          split_method:split_method
-                                                                    split_merchant_ref:split_merchant_ref
-                                                                   split_currency_code:split_currency_code]
-                           completion:^(NSDictionary *dict, NSError *error){
-                               
-                               if (error) {
-                                   completion(nil, error);
-                                   return;
-                               }
-                               
-                               if([dict valueForKey:STATUS_KEY_NAME]){ // valid response
-                                   
-                                   completion(dict,nil);
-                               }else{
-                                   completion(dict,[NSError errorWithDomain:SERVER_ERROR_MSG code:101 userInfo:nil]);
-                               }
-                           }];
+                                                                         split_transaction_tag:split_transaction_tag
+                                                                        split_transaction_type:split_transaction_type
+                                                                          split_split_shipment:split_split_shipment
+                                                                                  split_method:split_method
+                                                                            split_merchant_ref:split_merchant_ref
+                                                                           split_currency_code:split_currency_code]
+                                                                        completion:^(NSDictionary *dict, NSError *error){
+        
+        if (error) {
+            completion(nil, error);
+            return;
+        }
+        
+        if([dict valueForKey:STATUS_KEY_NAME]){ // valid response
+            
+            completion(dict,nil);
+        }else{
+            completion(dict,[NSError errorWithDomain:SERVER_ERROR_MSG code:101 userInfo:nil]);
+        }
+    }];
 }
 
 /**
@@ -1675,17 +1523,17 @@
  */
 
 -(void)submitAuthorizeOrPurchaseTransactionRecurringPayment:(NSString*)totalAmount
-                                            transactionType:(NSString*)transactionType
-                                                merchantRef:(NSString*)merchantRef
-                                                    pMethod:(NSString*)pMethod
-                                               currencyCode:(NSString*)currencyCode
-                                                   cardtype:(NSString*)cardtype
-                                             cardHolderName:(NSString*)cardHolderName
-                                                 cardNumber:(NSString*)cardNumber
-                                    cardExpirymMonthAndYear:(NSString*)cardExpirymMonthAndYear
-                                                    cardCVV:(NSString*)cardCVV
-                                               eciIndicator:(NSString*)eciIndicator
-                                                 completion:(void (^)(NSDictionary *dict, NSError* error))completion
+                                          transactionType:(NSString*)transactionType
+                                              merchantRef:(NSString*)merchantRef
+                                                  pMethod:(NSString*)pMethod
+                                             currencyCode:(NSString*)currencyCode
+                                                 cardtype:(NSString*)cardtype
+                                           cardHolderName:(NSString*)cardHolderName
+                                               cardNumber:(NSString*)cardNumber
+                                  cardExpirymMonthAndYear:(NSString*)cardExpirymMonthAndYear
+                                                  cardCVV:(NSString*)cardCVV
+                                             eciIndicator:(NSString*)eciIndicator
+completion:(void (^)(NSDictionary *dict, NSError* error))completion
 {
     [self postATransactionWithPayload:[self constructCreditCardPayloadWithCardRecurringPayment:totalAmount transactionType:transactionType merchantRef:merchantRef pMethod:pMethod currencyCode:currencyCode cardtype:cardtype cardHolderName:cardHolderName  cardNumber:cardNumber cardExpirymMonthAndYear:cardExpirymMonthAndYear cardCVV:cardCVV eciIndicator:eciIndicator ]  completion:^(NSDictionary *dict, NSError *error){
         
@@ -1703,7 +1551,47 @@
     }];
 }
 
-
+/**
+ * submitPurchaseTransactionWithCreditCardDetails
+ * Use this method to submit payments credit and debit cards. Supported transaction type is 'Purchase'
+ * It supports Visa payments, MasterCard payments,  American Express payments and Discover payments
+ * For moee details refer https://developer.payeezy.com/payeezy-api-reference/apis/credit-card-payments
+ @param cardType
+ @param cardHolderName
+ @param cardNumber
+ @param cardExpMMYY
+ @param cardCVV
+ @param currencyCode
+ @param totalAmount
+ @param merchantRef
+ @return Returns
+ @see
+ */
+-(void)submitPurchaseTransactionWithCreditCardDetails:(NSString*)cardType
+                                       cardHolderName:(NSString*)cardHolderName
+                                           cardNumber:(NSString*)cardNumber
+                              cardExpirymMonthAndYear:(NSString*)cardExpMMYY
+                                              cardCVV:(NSString*)cardCVV
+                                         currencyCode:(NSString*)currencyCode
+                                          totalAmount:(NSString*)totalAmount
+                             merchantRefForProcessing:(NSString*)merchantRef
+                                           completion:(void (^)(NSDictionary *dict, NSError* error))completion
+{
+    [self postATransactionWithPayload:[self constructCreditCardPayloadWithCardCVV:cardCVV cardExpMMYY:cardExpMMYY cardNumber:cardNumber cardHolderName:cardHolderName cardType:cardType currencyCode:currencyCode totalAmount:totalAmount merchantRef:merchantRef transactionType:@"purchase"]  completion:^(NSDictionary *dict, NSError *error){
+        
+        if (error) {
+            completion(nil, error);
+            return;
+        }
+        
+        if([dict valueForKey:STATUS_KEY_NAME]){ // valid response
+            
+            completion(dict,nil);
+        }else{
+            completion(dict,[NSError errorWithDomain:SERVER_ERROR_MSG code:101 userInfo:nil]);
+        }
+    }];
+}
 
 /**
  * PayeezyClient method to process credit card payments regardless to PKPayment supported devices
@@ -1743,7 +1631,7 @@
                                               totalAmount:(NSString*)totalAmount
                                           transactionType:(NSString*)transactionType
                                  merchantRefForProcessing:(NSString*)merchantRef
-                                               completion:(void (^)(NSDictionary *dict, NSError* error))completion
+                                            completion:(void (^)(NSDictionary *dict, NSError* error))completion
 {
     
     [self postATransactionWithPayload:[self constructCreditCardPayloadWithCardAVS:cardType cardHolderName:cardHolderName cardNumber:cardNumber cardExpMMYY:cardExpMMYY phoneType:phoneType phoneNumber:phoneNumber billingCity:billingCity billingCountry:billingCountry  billingEmail:billingEmail billingStreet:billingStreet  billingState:billingState    billingZipCode:billingZipCode currencyCode:currencyCode  totalAmount:totalAmount transactionType:transactionType merchantRefForProcessing:merchantRef]  completion:^(NSDictionary *dict, NSError *error){
@@ -1786,7 +1674,7 @@
  @"state_province":@"MO",
  @"zip_postal_code":@"63146 "
  };
- 
+
  @param cardType
  @param cardHolderName
  @param cardNumber
@@ -1843,7 +1731,7 @@
  * Use this method to 'capture' or 'void' an authorization or to 'refund' a charge
  * For more information refer https://developer.payeezy.com/payeezy-api-reference/apis/capture-or-reverse-payment
  
- here is sample payload
+ here is sample payload 
  "merchant_ref": "abc1412096293369",
  "transaction_tag": "1847220",
  "transaction_type": "void",
@@ -1864,7 +1752,7 @@
 -(void)submitVoidCaptureRefundTransactionWithCreditCardDetails:(NSString*)merchantRef
                                                 transactiontag:(NSString*)transactiontag
                                                transactionType:(NSString*)transactionType
-                                                 transactionId:(NSString*)transactionId
+                                               transactionId:(NSString*)transactionId
                                              paymentMethodType:(NSString*)paymentMethodType
                                                    totalAmount:(NSString*)totalAmount
                                                   currencyCode:(NSString*)currencyCode
@@ -1904,7 +1792,7 @@
  * ...
  * When sending final shipment, x = y
  * Ex: shipment3 - 03/03.
- 
+
  @param merchantRef
  @param transactiontag
  @param transactionType
@@ -1919,13 +1807,13 @@
 
 
 -(void)submitSplitTransactionWithCreditCardDetails:(NSString*)merchantRef
-                                    transactiontag:(NSString*)transactiontag
-                                   transactionType:(NSString*)transactionType
-                                 paymentMethodType:(NSString*)paymentMethodType
-                                     splitShipment:(NSString *)splitShipment
-                                       totalAmount:(NSString*)totalAmount
-                                      currencyCode:(NSString*)currencyCode
-                                        completion:(void (^)(NSDictionary *dict, NSError* error))completion{
+                                                transactiontag:(NSString*)transactiontag
+                                               transactionType:(NSString*)transactionType
+                                             paymentMethodType:(NSString*)paymentMethodType
+                                                 splitShipment:(NSString *)splitShipment
+                                                   totalAmount:(NSString*)totalAmount
+                                                  currencyCode:(NSString*)currencyCode
+                                                    completion:(void (^)(NSDictionary *dict, NSError* error))completion{
     
     
     
@@ -1970,7 +1858,7 @@
                                               completion:(void (^)(NSDictionary *dict, NSError* error))completion{
 }
 
-/**
+ /**
  *  submitAuthorizeTransactionWithSoftSescriptorsCreditCardDetails
  *  A descriptor is a piece of identifying information about a merchant, e.g. business name, phone number,
  *  city and/or state, which appears on buyers’ credit/debit card statements. These descriptors remind cardholders
@@ -1984,9 +1872,9 @@
  *  on a statement. Ex:Soft Descriptor: ABCMovies.com Caddyshack 8885551212 Note:In this example, ABCMovies.com and
  *  Caddyshack are entered in the DBA Name field.Phone numbers should always be entered with numeric characters only.
  *  For more information https://developer.payeezy.com/payeezy-api-reference/apis/credit-card-payments
- 
- here is sample payload
- 
+
+  here is sample payload
+
  {
  "amount":"9200",
  "transaction_type":"purchase",
@@ -2023,28 +1911,28 @@
  totalAmount:(NSString*)totalAmount
  merchantRefForProcessing:(NSString*)merchantRef
  
- }
- @param totalAmount
- @param transactionType
- @param merchantRef
- @param pMethod
- @param currencyCode
- @param cardtype
- @param cardHolderName
- @param cardNumber
- @param cardExpMMYY
- @param cardCVV
- @param dbaNameSD
- @param streetSD
- @param regionSD
- @param midSD
- @param mccSD
- @param postalCodeSD
- @param countryCodeSD
- @param merchantContactInfoSD
- @return Returns
- @see
- */
+ } 
+  @param totalAmount
+  @param transactionType
+  @param merchantRef
+  @param pMethod
+  @param currencyCode
+  @param cardtype
+  @param cardHolderName
+  @param cardNumber
+  @param cardExpMMYY
+  @param cardCVV
+  @param dbaNameSD
+  @param streetSD
+  @param regionSD
+  @param midSD
+  @param mccSD
+  @param postalCodeSD
+  @param countryCodeSD
+  @param merchantContactInfoSD
+  @return Returns
+  @see
+   */
 
 -(void)submitAuthorizeTransactionWithSoftSescriptorsCreditCardDetails:(NSString*)totalAmount
                                                       transactionType:(NSString*)transactionType
@@ -2064,7 +1952,7 @@
                                                          postalCodeSD:(NSString*)postalCodeSD
                                                         countryCodeSD:(NSString*)countryCodeSD
                                                 merchantContactInfoSD:(NSString*)merchantContactInfoSD
-                                                           completion:(void (^)(NSDictionary *dict, NSError* error))completion{
+                                                            completion:(void (^)(NSDictionary *dict, NSError* error))completion{
     [self postATransactionWithPayload:[self constructTransactionWithSoftSescriptorsCreditCardPayload:(NSString *)totalAmount   transactionType:(NSString *)transactionType merchantRef:(NSString *)merchantRef pMethod:(NSString*)pMethod currencyCode:(NSString *)currencyCode cardtype:(NSString *)cardtype cardHolderName:(NSString *)cardHolderName cardNumber:(NSString *)cardNumber cardExpMMYY:(NSString *)cardExpMMYY cardCVV:(NSString *)cardCVV dbaNameSD:(NSString *)dbaNameSD streetSD:(NSString *)streetSD regionSD:(NSString *)regionSD midSD:(NSString *)midSD mccSD:(NSString *)mccSD postalCodeSD:(NSString *)postalCodeSD countryCodeSD:(NSString *)countryCodeSD  merchantContactInfoSD:(NSString *) merchantContactInfoSD]  completion:^(NSDictionary *dict, NSError *error){
         
         if (error) {
@@ -2107,7 +1995,7 @@
                                currencyCode:(NSString*)currencyCode
                                  completion:(void (^)(NSDictionary *dict, NSError* error))completion{
     [self postATransactionWithPayload:[self constructActivationTransactionValueLinkPayload:(NSString *)cardHolderName
-                                                                                cardNumber:(NSString *)cardNumber cardType:(NSString *)cardType cardCost:(NSString*)cardCost totalAmt:(NSString *)totalAmt transactiontype:(NSString *)transactiontype pMethod:(NSString *)pMethod currencyCode:(NSString *)currencyCode ]  completion:^(NSDictionary *dict, NSError *error){
+          cardNumber:(NSString *)cardNumber cardType:(NSString *)cardType cardCost:(NSString*)cardCost totalAmt:(NSString *)totalAmt transactiontype:(NSString *)transactiontype pMethod:(NSString *)pMethod currencyCode:(NSString *)currencyCode ]  completion:^(NSDictionary *dict, NSError *error){
         
         if (error) {
             completion(nil, error);
@@ -2125,18 +2013,18 @@
 }
 
 
-/**
+ /**
  * PayeezyClient method to process credit card payments regardless to PKPayment supported devices
- @param amount
- @param transactiontype
- @param pMethod
- @param currencyCode
- @param cardType
- @param cardholderName
- @param cardNumber
- @param expDate
- @return Returns
- @see
+  @param amount
+  @param transactiontype
+  @param pMethod
+  @param currencyCode
+  @param cardType
+  @param cardholderName
+  @param cardNumber
+  @param expDate
+  @return Returns
+  @see
  */
 
 -(void)submitNakedRefundDiscoverRefundTransaction:(NSString*)amount
@@ -2233,31 +2121,31 @@
                                        merchantRef:(NSString*)merchantRef
                                         completion:(void (^)(NSDictionary *dict, NSError* error))completion{
     [self postATransactionWithPayload:[self constructPurchaseTelecheckPersonalTransaction:(NSString*)checkNumber
-                                                                                checkType:(NSString*)checkType
-                                                                            accountNumber:(NSString*)accountNumber
-                                                                            routingNumber:(NSString*)routingNumber
-                                                                        accountholderName:(NSString*)accountholderName
-                                                                           customerIdType:(NSString*)customerIdType
-                                                                         customerIdNumber:(NSString*)customerIdNumber
-                                                                              clientEmail:(NSString*)clientEmail
-                                                                           giftCardAmount:(NSString*)giftCardAmount
-                                                                                      vip:(NSString*)vip
-                                                                                  clerkId:(NSString*)clerkId
-                                                                                 deviceId:(NSString*)deviceId
-                                                                              releaseType:(NSString*)releaseType
-                                                                       registrationNumber:(NSString*)registrationNumber
-                                                                         registrationDate:(NSString*)registrationDate
-                                                                              dateOfBirth:(NSString*)dateOfBirth
-                                                                                   street:(NSString*)street
-                                                                                     city:(NSString*)city
-                                                                            stateProvince:(NSString*)stateProvince
-                                                                            zipPostalCode:(NSString*)zipPostalCode
-                                                                                  country:(NSString*)country
-                                                                                  pMethod:(NSString*)pMethod
-                                                                          transactionType:(NSString*)transactionType
-                                                                              totalAmount:(NSString*)totalAmount
-                                                                             currencyCode:(NSString*)currencyCode
-                                                                              merchantRef:(NSString*)merchantRef ]  completion:^(NSDictionary *dict, NSError *error){
+                                                                                 checkType:(NSString*)checkType
+                                                                             accountNumber:(NSString*)accountNumber
+                                                                             routingNumber:(NSString*)routingNumber
+                                                                         accountholderName:(NSString*)accountholderName
+                                                                            customerIdType:(NSString*)customerIdType
+                                                                          customerIdNumber:(NSString*)customerIdNumber
+                                                                               clientEmail:(NSString*)clientEmail
+                                                                            giftCardAmount:(NSString*)giftCardAmount
+                                                                                       vip:(NSString*)vip
+                                                                                   clerkId:(NSString*)clerkId
+                                                                                  deviceId:(NSString*)deviceId
+                                                                               releaseType:(NSString*)releaseType
+                                                                        registrationNumber:(NSString*)registrationNumber
+                                                                          registrationDate:(NSString*)registrationDate
+                                                                               dateOfBirth:(NSString*)dateOfBirth
+                                                                                    street:(NSString*)street
+                                                                                      city:(NSString*)city
+                                                                             stateProvince:(NSString*)stateProvince
+                                                                             zipPostalCode:(NSString*)zipPostalCode
+                                                                                   country:(NSString*)country
+                                                                                   pMethod:(NSString*)pMethod
+                                                                           transactionType:(NSString*)transactionType
+                                                                               totalAmount:(NSString*)totalAmount
+                                                                              currencyCode:(NSString*)currencyCode
+                                                                               merchantRef:(NSString*)merchantRef ]  completion:^(NSDictionary *dict, NSError *error){
         
         if (error) {
             completion(nil, error);
@@ -2355,7 +2243,7 @@
 
 -(void)submitAuthorizeTransactionL2WithCreditCardDetails:(NSString*)totalAmount
                                          transactionType:(NSString*)transactionType
-                                          transactionTag:(NSString*)transactionTag
+                                         transactionTag:(NSString*)transactionTag
                                 merchantRefForProcessing:(NSString*)merchantRef
                                                  pMethod:(NSString*)pMethod
                                             currencyCode:(NSString*)currencyCode
@@ -2476,7 +2364,7 @@
  *   }
  *  for more information https://developer.payeezy.com/payeezy-api-reference/apis/credit-card-payments
  
- Sample payload
+Sample payload
  {
  "amount":"9200",
  "transaction_type":"purchase",
@@ -2484,53 +2372,53 @@
  "method":"credit_card",
  "currency_code":"USD",
  "credit_card":{
- "type":"mastercard",
- "cardholder_name":"Eck Test 3",
- "card_number":"5186009100016415",
- "exp_date":"0416",
- "cvv":"123"
+     "type":"mastercard",
+     "cardholder_name":"Eck Test 3",
+     "card_number":"5186009100016415",
+     "exp_date":"0416",
+     "cvv":"123"
  },
  "level2":{
- "tax1_amount":10,
- "tax1_number":"2",
- "tax2_amount":5,
- "tax2_number":"3",
- "customer_ref":"customer1"
+     "tax1_amount":10,
+     "tax1_number":"2",
+     "tax2_amount":5,
+     "tax2_number":"3",
+     "customer_ref":"customer1"
  },
  "level3":{
- "alt_tax_amount":10,
- "alt_tax_id":"098841111",
- "discount_amount":1,
- "duty_amount":0.5,
- "freight_amount":5,
- "ship_from_zip":"11235",
- "ship_to_address":{
- "city":"New York",
- "state":"NY"
- ,"zip":"11235",
- "country":"USA",
- "email":"abc@firstdata.com",
- "name":"Bob Smith",
- "phone":"212-515-1111",
- "address_1":"123 Main Street",
- "customer_number":"12345"
- },
+     "alt_tax_amount":10,
+     "alt_tax_id":"098841111",
+     "discount_amount":1,
+     "duty_amount":0.5,
+     "freight_amount":5,
+     "ship_from_zip":"11235",
+     "ship_to_address":{
+         "city":"New York",
+         "state":"NY"
+         ,"zip":"11235",
+         "country":"USA",
+         "email":"abc@firstdata.com",
+         "name":"Bob Smith",
+         "phone":"212-515-1111",
+         "address_1":"123 Main Street",
+         "customer_number":"12345"
+     },
  "line_items":[
- {
- "description":"item 1",
- "quantity":"5",
- "commodity_code":"C",
- "discount_amount":1,
- "discount_indicator":"G",
- "gross_net_indicator":"P",
- "line_item_total":10,
- "product_code":"F",
- "tax_amount":5,
- "tax_rate":0.2800000000000000266453525910037569701671600341796875,
- "tax_type":"Federal",
- "unit_cost":1,
- "unit_of_measure":"meters"
- }]
+     {
+     "description":"item 1",
+     "quantity":"5",
+     "commodity_code":"C",
+     "discount_amount":1,
+     "discount_indicator":"G",
+     "gross_net_indicator":"P",
+     "line_item_total":10,
+     "product_code":"F",
+     "tax_amount":5,
+     "tax_rate":0.2800000000000000266453525910037569701671600341796875,
+     "tax_type":"Federal",
+     "unit_cost":1,
+     "unit_of_measure":"meters"
+    }]
  }
  }
  @param  transactionType
@@ -2570,10 +2458,10 @@
  @param  state
  @param  zip
  @param  country
- @param  email
+ @param  email                  
  @return Returns
  @see
- */
+*/
 
 -(void)submitPurchaseTransactionWithL2L3CreditCardDetails:(NSString*)amount
                                           transactionType:(NSString*)transactionType
@@ -2634,7 +2522,7 @@
                                                                                        tax1Amount:(NSNumber*)tax1Amount
                                                                                        tax1Number:(NSString*)tax1Number
                                                                                        tax2Amount:(NSNumber*)tax2Amount
-                                                                                       tax2Number:(NSString*)tax2Number
+                                                                                      tax2Number:(NSString*)tax2Number
                                                                                       customerRef:(NSString*)customerRef
                                        //line_items
                                                                                       description:(NSString*)description
@@ -2697,14 +2585,14 @@
  */
 
 -(void)submitAuthorizeTransactionWithRecurringPaymentCreditCardDetails:(NSString*)cardType
-                                                        cardHolderName:(NSString*)cardHolderName
-                                                            cardNumber:(NSString*)cardNumber
-                                               cardExpirymMonthAndYear:(NSString*)cardExpMMYY
-                                                               cardCVV:(NSString*)cardCVV
-                                                          currencyCode:(NSString*)currenyCode
-                                                           totalAmount:(NSString*)totalAmount
-                                              merchantRefForProcessing:(NSString*)merchantRef
-                                                            completion:(void (^)(NSDictionary *dict, NSError* error))completion{}
+                                                       cardHolderName:(NSString*)cardHolderName
+                                                           cardNumber:(NSString*)cardNumber
+                                              cardExpirymMonthAndYear:(NSString*)cardExpMMYY
+                                                              cardCVV:(NSString*)cardCVV
+                                                         currencyCode:(NSString*)currenyCode
+                                                          totalAmount:(NSString*)totalAmount
+                                             merchantRefForProcessing:(NSString*)merchantRef
+                                                           completion:(void (^)(NSDictionary *dict, NSError* error))completion{}
 /**
  submitPurchaseTransactionWithSoftSescriptorsCreditCardDetails
  @param cardType
